@@ -27,14 +27,18 @@ jobs:
       run: |
         echo "$GPG_KEY_PRIVATE" | gpg --import --batch &> /dev/null
         echo "[ OK ] GPG Key imported."
-    - name: Deploy & Release
+    - name: Publish to Maven Central
       env:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
         GPG_KEY_PASSWORD_SECRET: ${{ secrets.GPG_KEY_PASSWORD_SECRET }}
+      run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+    - name: Publish to GitHub Packages
+      continue-on-error: true
+      env:
         GITHUB_PACKAGES_USERNAME: ${{ github.actor }}
         GITHUB_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
-        ./gradlew publishMavenPublicationToGitHubPackagesRepository
+        GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+        GPG_KEY_PASSWORD_SECRET: ${{ secrets.GPG_KEY_PASSWORD_SECRET }}
+      run: ./gradlew publishMavenPublicationToGitHubPackagesRepository

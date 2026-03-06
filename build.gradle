@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '2.3.10'
+    id 'org.jetbrains.kotlin.jvm' version '2.0.21'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
@@ -18,7 +18,7 @@ shadowJar {
 }
 
 group 'io.github.phompang'
-version '0.2.0'
+version '0.2.1'
 
 repositories {
     mavenCentral()
@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'io.mockk:mockk:1.14.9'
+    testImplementation 'io.mockk:mockk:1.13.13'
 }
 
 tasks.named('test') {
