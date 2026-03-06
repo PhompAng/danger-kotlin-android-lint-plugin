@@ -17,7 +17,7 @@ shadowJar {
     archiveBaseName.set('danger-kotlin-android-lint-plugin')
 }
 
-group 'com.phompang'
+group 'io.github.phompang'
 version '0.2.0'
 
 repositories {
