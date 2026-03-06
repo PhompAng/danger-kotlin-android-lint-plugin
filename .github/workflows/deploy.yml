@@ -31,12 +31,16 @@ jobs:
       env:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        GITHUB_PACKAGES_USERNAME: ${{ github.actor }}
+        GITHUB_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
         GPG_KEY_PASSWORD_SECRET: ${{ secrets.GPG_KEY_PASSWORD_SECRET }}
       run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
     - name: Publish to GitHub Packages
       continue-on-error: true
       env:
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         GITHUB_PACKAGES_USERNAME: ${{ github.actor }}
         GITHUB_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
