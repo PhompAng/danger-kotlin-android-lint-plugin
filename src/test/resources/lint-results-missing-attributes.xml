@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="5" by="lint 4.1.0">
+
+    <issue
+        id="LintError"
+        severity="Error"
+        message="Unexpected failure during lint analysis"
+        category="Lint"
+        priority="10"
+        summary="Lint Failure"
+        explanation="Lint failed for some reason."
+        errorLine1=""
+        errorLine2="">
+        <location
+            file="/src/main/AndroidManifest.xml"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        severity="Warning"
+        message="Not targeting the latest versions of Android"
+        category="Correctness"
+        priority="6"
+        summary="Target SDK attribute is not targeting latest version"
+        explanation="When your application runs on a version of Android that is more recent than your targetSdkVersion."
+        url="https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        urls="https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        errorLine1="        targetSdkVersion 28"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/src/main/build.gradle"
+            line="12"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource R.string.unused appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds."
+        errorLine1=""
+        errorLine2="">
+    </issue>
+
+</issues>

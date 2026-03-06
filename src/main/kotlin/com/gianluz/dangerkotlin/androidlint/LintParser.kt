@@ -48,7 +48,9 @@ internal object LintParser {
     }
 
     private fun Element.getLocation(): Issues.Issue.Location {
-        return (getElementsByTagName("location").item(0) as Element).run {
+        val locationElement = getElementsByTagName("location").item(0) as? Element
+            ?: return Issues.Issue.Location(file = "", line = "", column = "")
+        return locationElement.run {
             Issues.Issue.Location(
                 file = getAttribute("file"),
                 line = getAttribute("line"),

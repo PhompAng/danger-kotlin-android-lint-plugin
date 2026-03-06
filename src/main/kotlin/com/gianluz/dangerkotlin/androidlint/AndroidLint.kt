@@ -145,6 +145,6 @@ object AndroidLint : DangerPlugin() {
     }
 
     private fun String.asInt(): Int {
-        return Integer.parseInt(this)
+        return this.toIntOrNull() ?: 0
     }
 }

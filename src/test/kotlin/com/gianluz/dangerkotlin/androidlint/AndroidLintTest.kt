@@ -111,6 +111,19 @@ class AndroidLintTest {
         }
     }
 
+    @Test
+    fun givenIssuesWithMissingLineAttribute_whenReport_thenDefaultsToZero() {
+        givenNeverFailsConfiguration()
+        every { LintParser.parse(ANY_TEST_LINT_FILE) } returns ISSUES_WITH_MISSING_LINE
+
+        AndroidLint.report(ANY_TEST_LINT_FILE)
+
+        verify(ordering = Ordering.ORDERED) {
+            context.warn("Error: message", "file", 0)
+            context.warn("Warning: message", "file", 1)
+        }
+    }
+
     @AfterEach
     fun tearDown() {
         unmockkAll()
@@ -174,6 +187,39 @@ class AndroidLintTest {
                 ),
                 Issues.Issue(
                     "abcde",
+                    "Warning",
+                    "message",
+                    "category",
+                    "priority",
+                    "summary",
+                    "explanation",
+                    "url",
+                    "urls",
+                    "errorLine1",
+                    "errorLine2",
+                    Issues.Issue.Location("file", "1", "1")
+                )
+            ),
+            "version"
+        )
+        private val ISSUES_WITH_MISSING_LINE = Issues(
+            arrayListOf(
+                Issues.Issue(
+                    "abc",
+                    "Error",
+                    "message",
+                    "category",
+                    "priority",
+                    "summary",
+                    "explanation",
+                    "url",
+                    "urls",
+                    "errorLine1",
+                    "errorLine2",
+                    Issues.Issue.Location("file", "", "")
+                ),
+                Issues.Issue(
+                    "abcd",
                     "Warning",
                     "message",
                     "category",
