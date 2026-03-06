@@ -1,12 +1,13 @@
 apply from: 'secrets.gradle'
 
-task sourceJar(type: Jar) {
-    classifier "sources"
+tasks.register('sourceJar', Jar) {
+    archiveClassifier.set("sources")
     from sourceSets.main.allJava
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier "javadoc"
+tasks.register('javadocJar', Jar) {
+    dependsOn javadoc
+    archiveClassifier.set("javadoc")
     from javadoc.destinationDir
 }
 
@@ -15,27 +16,22 @@ signing {
     sign publishing.publications
 }
 
-nexusStaging {
-    username = loadSecret("SONATYPE_USERNAME")
-    password = loadSecret("SONATYPE_PASSWORD")
-    delayBetweenRetriesInMillis = 5000
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://oss.sonatype.org/content/repositories/snapshots/"))
+            username = loadSecret("SONATYPE_USERNAME")
+            password = loadSecret("SONATYPE_PASSWORD")
+        }
+    }
 }
 
 publishing {
     repositories {
         maven {
-            name = "Sonatype"
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-            credentials {
-                username = loadSecret("SONATYPE_USERNAME")
-                password = loadSecret("SONATYPE_PASSWORD")
-            }
-        }
-        maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/gianluz/danger-kotlin-android-lint-plugin")
+            url = uri("https://maven.pkg.github.com/PhompAng/danger-kotlin-android-lint-plugin")
             credentials {
                 username = loadSecret("GITHUB_PACKAGES_USERNAME")
                 password = loadSecret("GITHUB_PACKAGES_PASSWORD")
@@ -46,35 +42,29 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            artifact sourceJar {
-                classifier "sources"
-                from sourceSets.main.allJava
-            }
-            artifact javadocJar {
-                classifier "javadoc"
-                from javadoc.destinationDir
-            }
+            artifact(tasks.named('sourceJar'))
+            artifact(tasks.named('javadocJar'))
             pom {
                 name = 'Danger Kotlin - Android Lint Plugin'
                 description = 'A plugin for Danger Kotlin for Android Lint'
-                url = "https://github.com/gianluz/danger-kotlin-android-lint-plugin"
+                url = "https://github.com/PhompAng/danger-kotlin-android-lint-plugin"
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
-                        url = 'https://github.com/gianluz/danger-kotlin-android-lint-plugin/blob/master/LICENSE'
+                        url = 'https://github.com/PhompAng/danger-kotlin-android-lint-plugin/blob/master/LICENSE'
                     }
                 }
                 developers {
                     developer {
-                        id = 'gianluz'
-                        name = 'Gianluca Zuddas'
-                        email = 'gianluca.zuddas@gmail.com'
+                        id = 'phompang'
+                        name = 'Pichai Sivawat'
+                        email = 'pichai.sivawat@gmail.com'
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/gianluz/danger-kotlin-android-lint-plugin.git'
-                    developerConnection = 'scm:git:ssh://github.com/gianluz/danger-kotlin-android-lint-plugin.git'
-                    url = 'https://github.com/gianluz/danger-kotlin-android-lint-plugin'
+                    connection = 'scm:git:git://github.com/PhompAng/danger-kotlin-android-lint-plugin.git'
+                    developerConnection = 'scm:git:ssh://github.com/PhompAng/danger-kotlin-android-lint-plugin.git'
+                    url = 'https://github.com/PhompAng/danger-kotlin-android-lint-plugin'
                 }
             }
         }

@@ -1,10 +1,13 @@
 configurations {
-    provided
-    compile.extendsFrom provided
-    implementation.extendsFrom includeJar {
+    includeJar {
+        canBeResolved = true
+        canBeConsumed = false
         transitive = false
     }
-    api.extendsFrom includeRecursiveJar {
-        transitive = true
+    includeRecursiveJar {
+        canBeResolved = true
+        canBeConsumed = false
     }
+    implementation.extendsFrom(includeJar)
+    implementation.extendsFrom(includeRecursiveJar)
 }
