@@ -36,5 +36,5 @@ jobs:
         GITHUB_PACKAGES_USERNAME: ${{ github.actor }}
         GITHUB_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        ./gradlew publish
-        ./gradlew closeAndReleaseStagingRepositories
+        ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+        ./gradlew publishMavenPublicationToGitHubPackagesRepository
